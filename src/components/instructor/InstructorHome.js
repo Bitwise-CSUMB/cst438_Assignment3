@@ -8,7 +8,6 @@ const InstructorHome = () => {
     const onChange = (event) => {
     setTerm({...term, [event.target.name]:event.target.value});
     }
-
     return (
         <>
             <table className="Center">
