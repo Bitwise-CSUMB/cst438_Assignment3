@@ -17,11 +17,10 @@ const EnrollmentsView = (props) => {
     const headers = ['Enrollment Id', 'Student Id', 'Name',  'Email', 'Grade'];
 
     const location = useLocation();
-    const {secNo, courseId, secId} = location.state;
+    const {secNo} = location.state;
 
     const [enrollments, setEnrollments] = useState([]);
     const [message, setMessage] = useState('');
-    const [grade, setGrade] = useState('');
     
     const fetchEnrollments = async () => {
         try {
@@ -58,8 +57,8 @@ const EnrollmentsView = (props) => {
             let char0 = g.charCodeAt(0);
             let char1 = g.charCodeAt(1);
             if ((l > 2 || l === 0) || (l === 1 && (char0 < 65 || char0 > 70 || char0 === 69)) 
-                || (l === 2 && (char1 !== 43 && char1 !== 45) 
-                || (char0 < 65 || char0 > 70) || char0 === 69)) {
+                || (l === 2 && ((char1 !== 43 && char1 !== 45) 
+                || (char0 < 65 || char0 > 70) || (char0 === 69)))) {
                 setMessage("One or more grade entries are invalid");
                 return;
             }

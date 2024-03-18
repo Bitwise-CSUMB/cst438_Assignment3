@@ -18,7 +18,7 @@ import AssignmentUpdate from "./AssignmentUpdate";
 const AssignmentsView = (props) => {
 
     const location = useLocation();
-    const {secNo, courseId, secId} = location.state;
+    const {secNo} = location.state;
 
     const [assignments, setAssignments] = useState([  ]);
     const [message, setMessage] = useState('');

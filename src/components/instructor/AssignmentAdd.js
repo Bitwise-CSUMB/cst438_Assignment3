@@ -6,7 +6,6 @@ import DialogContent from "@mui/material/DialogContent";
 import TextField from "@mui/material/TextField";
 import DialogActions from "@mui/material/DialogActions";
 import {useLocation} from "react-router-dom";
-import {SERVER_URL} from "../../Constants";
 
 // complete the code.  
 // instructor adds an assignment to a section
@@ -56,7 +55,6 @@ const AssignmentAdd = (props)  => {
       editClose();
     }
   };
-
 
   return (
       <div>
