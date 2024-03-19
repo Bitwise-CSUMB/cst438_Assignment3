@@ -17,7 +17,7 @@ const EnrollmentsView = (props) => {
     const headers = ['Enrollment Id', 'Student Id', 'Name',  'Email', 'Grade'];
 
     const location = useLocation();
-    const {secNo} = location.state;
+    const {secNo, courseId} = location.state;
 
     const [enrollments, setEnrollments] = useState([]);
     const [message, setMessage] = useState('');
@@ -53,12 +53,7 @@ const EnrollmentsView = (props) => {
     const saveChanges = async () => {
         for (let i = 0; i < enrollments.length; i++) {
             let g = enrollments[i].grade
-            let l = g.length;
-            let char0 = g.charCodeAt(0);
-            let char1 = g.charCodeAt(1);
-            if ((l > 2 || l === 0) || (l === 1 && (char0 < 65 || char0 > 70 || char0 === 69)) 
-                || (l === 2 && ((char1 !== 43 && char1 !== 45) 
-                || (char0 < 65 || char0 > 70) || (char0 === 69)))) {
+            if (isNaN(Number(g)) || g < 0 || g > 100) {
                 setMessage("One or more grade entries are invalid");
                 return;
             }
@@ -91,6 +86,7 @@ const EnrollmentsView = (props) => {
     
     return(
         <> 
+        <h3>{courseId} Enrollments</h3>
         <h5 class="Error">{message}</h5>
            <table className="Center" > 
                 <thead>

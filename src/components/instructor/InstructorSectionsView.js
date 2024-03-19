@@ -29,7 +29,7 @@ const InstructorSectionsView = (props) => {
         if (term.year === '' || term.semester === '') {
             setMessage("Invalid search parameters");
         } else {
-            term.semester = (term.semester[0].toUpperCase() + term.semester.slice(1)).trim();
+            term.semester = (term.semester[0].toUpperCase() + term.semester.slice(1).toLowerCase()).trim();
             try {
                 const response = await fetch(`${SERVER_URL}/sections?email=${instructorEmail}&year=${term.year}&semester=${term.semester}`);
                 if (response.ok) {
@@ -54,6 +54,7 @@ const InstructorSectionsView = (props) => {
 
     return(
         <> 
+        <h3>Sections {term.year} {term.semester}</h3>
         <h5 class="Error">{message}</h5>
            <table className="Center" > 
                 <thead>

@@ -101,7 +101,11 @@ const AssignmentsView = (props) => {
           fetchAssignments();
         } else {
           const rc = await response.json();
-          setMessage("Delete failed "+rc.message);
+          if (rc.message.startsWith("could not execute statement [Referential")) {
+            setMessage("Delete failed: There are still Grades associated with this assignment." + assignmentId);
+          } else {
+            setMessage("Delete failed "+rc.message);
+          }
         }
       } catch (err) {
         setMessage("network error: "+err);
