@@ -72,8 +72,6 @@ const ScheduleView = () => {
     const dropCourse = async (event) => {
 
         const idx = event.target.parentElement.parentElement.rowIndex - 1;
-        console.log("idx: " + idx)
-
         const enrollmentId = enrollments[idx].enrollmentId;
 
         try {
