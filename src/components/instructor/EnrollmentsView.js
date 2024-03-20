@@ -51,13 +51,8 @@ const EnrollmentsView = () => {
 
     const saveChanges = async () => {
         for (let i = 0; i < enrollments.length; i++) {
-            let g = enrollments[i].grade.toUpperCase();
-            let l = g.length;
-            let char0 = g.charCodeAt(0);
-            let char1 = g.charCodeAt(1);
-            if ((l > 2 || l === 0) || (l === 1 && (char0 < 65 || char0 > 70 || char0 === 69))
-                || (l === 2 && ((char1 !== 43 && char1 !== 45)
-                    || (char0 < 65 || char0 > 70) || (char0 === 69)))) {
+            let g = enrollments[i].grade.toUpperCase().trim();
+            if (!g.match(/^[A-DF]([-+]?|\b)$/)) {
                 setMessage("Enrollment " + enrollments[i].enrollmentId + " has an invalid grade.");
                 return;
             }
