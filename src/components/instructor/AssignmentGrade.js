@@ -13,71 +13,70 @@ import { SERVER_URL } from '../../Constants';
 // display the list as a table with columns 'gradeId', 'student name', 'student email', 'score' 
 // score column is an input field 
 //  <input type="text" name="score" value={g.score} onChange={onChange} />
- 
+
 
 const AssignmentGrade = (props) => {
- 
-    const a = props.assignment;
 
-    const headers = ['Grade Id', 'Student Name', 'Student Email',  'Score'];
-    const [open, setOpen] = useState(false);
-    const [grades, setGrades] = useState([]);
-    const [scores, setScores] = useState([]);
-    const [message, setMessage] = useState('');
+  const a = props.assignment;
 
-    const fetchGrades = async () => {
-      try {
-        const response = await fetch(`${SERVER_URL}/assignments/${a.id}/grades`);
-        if (response.ok) {
-          const data = await response.json();
-          setGrades(data);
-          setScores(data.map(obj => obj.score));
-          if (data.length === 0) {
-            setMessage("No grades found for this assignment.");
-          }
-        }
-        else {
-          const rc = await response.json();
-          setMessage(rc.message);
-        }
-      } catch (err) {
-        setMessage("Error found: " + err);
+  const headers = ['Grade Id', 'Student Name', 'Student Email', 'Score'];
+  const [open, setOpen] = useState(false);
+  const [grades, setGrades] = useState([]);
+  const [scores, setScores] = useState([]);
+  const [message, setMessage] = useState('');
+
+  const fetchGrades = async () => {
+    try {
+      const response = await fetch(`${SERVER_URL}/assignments/${a.id}/grades`);
+      if (response.ok) {
+        const data = await response.json();
+        setGrades(data);
+        setScores(data.map(obj => obj.score));
+        if (!data.length)
+          setMessage("No grades found for this assignment.");
       }
-    }
-
-    useEffect( () => {
-      fetchGrades();
-    },  []);
- 
-    const editOpen = () => {
-        setOpen(true);
-      };
-    
-    const editClose = () => {
-      fetchGrades();
-      setOpen(false);
-    };
-
-    const editChange = (event) => {
-      const idx = event.target.parentElement.parentElement.parentElement.parentElement.rowIndex - 1;
-
-      if (event.target.value > 100 || !(/^\d+$/.test(event.target.value.trim()))) {
-        const updatedGrades = [...grades];
-        updatedGrades[idx] = {...updatedGrades[idx], [event.target.name]:scores[idx]};
-
-        setGrades(updatedGrades);
-        return;
+      else {
+        const rc = await response.json();
+        setMessage(rc.message);
       }
-
-      const updatedGrades = [...grades];
-      updatedGrades[idx] = {...updatedGrades[idx], [event.target.name]:event.target.value};
-
-      setGrades(updatedGrades);
+    } catch (err) {
+      setMessage("Error found: " + err);
     }
-    
-    const onSave = async () => {
-      try {
-        const response = await fetch(`${SERVER_URL}/grades`,
+  }
+
+  useEffect(() => {
+    fetchGrades();
+  }, []);
+
+  const editOpen = () => {
+    setOpen(true);
+  };
+
+  const editClose = () => {
+    fetchGrades();
+    setOpen(false);
+  };
+
+  const editChange = (event) => {
+    const idx = event.target.parentElement.parentElement.parentElement.parentElement.rowIndex - 1;
+
+    let valueTarget = event.target.value;
+    if (isNaN(Number(event.target.value)) || event.target.value < 0 || event.target.value > 100) {
+      setMessage("Grade " + (idx + 1) + " is invalid.");
+      valueTarget = scores[idx];
+    } else
+      if (Number(message.split(" ")[1]) === (idx + 1))
+        setMessage("");
+
+    const updatedGrades = [...grades];
+    updatedGrades[idx] = { ...updatedGrades[idx], [event.target.name]: valueTarget };
+
+    setGrades(updatedGrades);
+  }
+
+  const onSave = async () => {
+    try {
+      const response = await fetch(`${SERVER_URL}/grades`,
         {
           method: 'PUT',
           headers: {
@@ -85,49 +84,50 @@ const AssignmentGrade = (props) => {
           },
           body: JSON.stringify(grades),
         });
-        if (!response.ok) {
-          const rc = await response.json();
-          setMessage(rc.message);
-        }
-      } catch (err) {
-        setMessage("Error found: " + err);
+      if (!response.ok) {
+        const rc = await response.json();
+        setMessage(rc.message);
       }
+    } catch (err) {
+      setMessage("Error found: " + err);
+    }
 
-      editClose();
-    };
-    
-    return (
-      <div>
-        <Button onClick={editOpen}>Grade</Button>
-        <Dialog open={open}>
-          <DialogTitle>Grade Assignment</DialogTitle>
-          <DialogContent style={{ paddingTop: 20 }}>
-            <h5>{message}</h5>
-            <table className="Center" > 
+    setMessage("");
+    editClose();
+  };
+
+  return (
+    <div>
+      <Button onClick={editOpen}>Grade</Button>
+      <Dialog open={open}>
+        <DialogTitle>Grade Assignment</DialogTitle>
+        <DialogContent style={{ paddingTop: 20 }}>
+          <h5 className="Error">{message}</h5>
+          <table className="Center" >
             <thead>
-            <tr>
-              {headers.map((h, idx) => (<th key={idx}>{h}</th>))}
-            </tr>
+              <tr>
+                {headers.map((h, idx) => (<th key={idx}>{h}</th>))}
+              </tr>
             </thead>
             <tbody>
-            {grades.map((g) => (
-                    <tr key={g.gradeId}>
-                    <td>{g.gradeId}</td>
-                    <td>{g.studentName}</td>
-                    <td>{g.studentEmail}</td>
-                    <td><TextField style={{padding:10}} fullWidth label="score" name="score" defaultValue={g.score} onChange={editChange}/></td>
-                    </tr>
-                ))}
+              {grades.map((g) => (
+                <tr key={g.gradeId}>
+                  <td>{g.gradeId}</td>
+                  <td>{g.studentName}</td>
+                  <td>{g.studentEmail}</td>
+                  <td><TextField style={{ padding: 10 }} fullWidth label="score" name="score" defaultValue={g.score} onChange={editChange} /></td>
+                </tr>
+              ))}
             </tbody>
-        </table>
-          </DialogContent>
-          <DialogActions>
-            <Button color="secondary" onClick={editClose}>Close</Button>
-            <Button color="primary" onClick={onSave}>Save</Button>
-          </DialogActions>
-        </Dialog>
-      </div>
-    );
+          </table>
+        </DialogContent>
+        <DialogActions>
+          <Button color="secondary" onClick={editClose}>Close</Button>
+          <Button color="primary" onClick={onSave}>Save</Button>
+        </DialogActions>
+      </Dialog>
+    </div>
+  );
 }
 
 export default AssignmentGrade;

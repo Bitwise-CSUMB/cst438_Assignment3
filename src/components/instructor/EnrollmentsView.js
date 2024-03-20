@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {useLocation} from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { SERVER_URL } from '../../Constants';
 import { TextField } from '@mui/material';
 import Button from '@mui/material/Button';
@@ -12,29 +12,28 @@ import Button from '@mui/material/Button';
 //  grade column is an input field
 //  hint:  <input type="text" name="grade" value={e.grade} onChange={onGradeChange} />
 
-const EnrollmentsView = (props) => {
+const EnrollmentsView = () => {
 
-    const headers = ['Enrollment Id', 'Student Id', 'Name',  'Email', 'Grade'];
+    const headers = ['Enrollment Id', 'Student Id', 'Name', 'Email', 'Grade'];
 
     const location = useLocation();
-    const {secNo, courseId} = location.state;
+    const { secNo, courseId } = location.state;
 
     const [enrollments, setEnrollments] = useState([]);
     const [message, setMessage] = useState('');
-    
+
     const fetchEnrollments = async () => {
         try {
             const response = await fetch(`${SERVER_URL}/sections/${secNo}/enrollments`);
             if (response.ok) {
                 const data = await response.json();
                 setEnrollments(data);
-                if (data.length === 0) {
+                if (!data.length)
                     setMessage("No enrollments found with this section.");
-                }
             }
             else {
-                    const rc = await response.json();
-                    setMessage(rc.message);
+                const rc = await response.json();
+                setMessage(rc.message);
             }
         } catch (err) {
             setMessage("Error found: " + err);
@@ -45,29 +44,34 @@ const EnrollmentsView = (props) => {
         const idx = event.target.parentElement.parentElement.parentElement.parentElement.rowIndex - 1;
 
         const updatedEnrollments = [...enrollments];
-        updatedEnrollments[idx] = {...updatedEnrollments[idx], [event.target.name]:event.target.value.trim().toUpperCase()};
+        updatedEnrollments[idx] = { ...updatedEnrollments[idx], [event.target.name]: event.target.value.trim().toUpperCase() };
 
         setEnrollments(updatedEnrollments);
     }
 
     const saveChanges = async () => {
         for (let i = 0; i < enrollments.length; i++) {
-            let g = enrollments[i].grade
-            if (isNaN(Number(g)) || g < 0 || g > 100) {
-                setMessage("One or more grade entries are invalid");
+            let g = enrollments[i].grade.toUpperCase();
+            let l = g.length;
+            let char0 = g.charCodeAt(0);
+            let char1 = g.charCodeAt(1);
+            if ((l > 2 || l === 0) || (l === 1 && (char0 < 65 || char0 > 70 || char0 === 69))
+                || (l === 2 && ((char1 !== 43 && char1 !== 45)
+                    || (char0 < 65 || char0 > 70) || (char0 === 69)))) {
+                setMessage("Enrollment " + enrollments[i].enrollmentId + " has an invalid grade.");
                 return;
             }
         }
 
         try {
-            const response = await fetch (`${SERVER_URL}/enrollments`,
-            {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(enrollments),
-            });
+            const response = await fetch(`${SERVER_URL}/enrollments`,
+                {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(enrollments),
+                });
             if (response.ok) {
                 setMessage("Enrollments saved");
                 fetchEnrollments();
@@ -76,32 +80,32 @@ const EnrollmentsView = (props) => {
                 setMessage("Response error: " + json.message);
             }
         } catch (err) {
-            setMessage("Error: " + err); 
+            setMessage("Error: " + err);
         }
     }
 
-    useEffect( () => {
+    useEffect(() => {
         fetchEnrollments();
-      },  []);
-    
-    return(
-        <> 
-        <h3>{courseId} Enrollments</h3>
-        <h5 class="Error">{message}</h5>
-           <table className="Center" > 
+    }, []);
+
+    return (
+        <>
+            <h3>{courseId} Enrollments</h3>
+            <h5 className="Error">{message}</h5>
+            <table className="Center" >
                 <thead>
-                <tr>
-                    {headers.map((h, idx) => (<th key={idx}>{h}</th>))}
-                </tr>
+                    <tr>
+                        {headers.map((h, idx) => (<th key={idx}>{h}</th>))}
+                    </tr>
                 </thead>
                 <tbody>
-                {enrollments.map((e, idx) => (
+                    {enrollments.map((e, idx) => (
                         <tr key={idx}>
-                        <td>{e.enrollmentId}</td>
-                        <td>{e.studentId}</td>
-                        <td>{e.name}</td>
-                        <td>{e.email}</td>
-                        <td><TextField style={{padding:10}} fullWidth label="grade" name="grade" defaultValue={e.grade} onChange={editChange}/></td>
+                            <td>{e.enrollmentId}</td>
+                            <td>{e.studentId}</td>
+                            <td>{e.name}</td>
+                            <td>{e.email}</td>
+                            <td><TextField style={{ padding: 10 }} fullWidth label="grade" name="grade" defaultValue={e.grade} onChange={editChange} /></td>
                         </tr>
                     ))}
                 </tbody>
