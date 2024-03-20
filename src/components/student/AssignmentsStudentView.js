@@ -23,6 +23,12 @@ const AssignmentsStudentView = () => {
 
     // Function to fetch assignments data from the server
     const fetchAssignments = async () => {
+
+        if (search.year.trim().length === 0 || isNaN(Number(search.year))) {
+            setMessage("Invalid year");
+            return;
+        }
+
         try {
             const response = await fetch(`${SERVER_URL}/assignments?studentId=${search.studentId}&year=${search.year}&semester=${search.semester}`);
             if (response.ok) {
