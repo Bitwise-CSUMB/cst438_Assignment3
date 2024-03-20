@@ -52,9 +52,14 @@ const EnrollmentsView = (props) => {
 
     const saveChanges = async () => {
         for (let i = 0; i < enrollments.length; i++) {
-            let g = enrollments[i].grade
-            if (isNaN(Number(g)) || g < 0 || g > 100) {
-                setMessage("One or more grade entries are invalid");
+            let g = enrollments[i].grade.toUpperCase();
+            let l = g.length;
+            let char0 = g.charCodeAt(0);
+            let char1 = g.charCodeAt(1);
+            if ((l > 2 || l === 0) || (l === 1 && (char0 < 65 || char0 > 70 || char0 === 69)) 
+                || (l === 2 && ((char1 !== 43 && char1 !== 45) 
+                || (char0 < 65 || char0 > 70) || (char0 === 69)))) {
+                setMessage("Enrollment " + enrollments[i].enrollmentId + " has an invalid grade.");
                 return;
             }
         }

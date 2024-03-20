@@ -61,16 +61,16 @@ const AssignmentGrade = (props) => {
     const editChange = (event) => {
       const idx = event.target.parentElement.parentElement.parentElement.parentElement.rowIndex - 1;
 
-      if (event.target.value > 100 || !(/^\d+$/.test(event.target.value.trim()))) {
-        const updatedGrades = [...grades];
-        updatedGrades[idx] = {...updatedGrades[idx], [event.target.name]:scores[idx]};
-
-        setGrades(updatedGrades);
-        return;
-      }
+      let valueTarget = event.target.value;
+      if (isNaN(Number(event.target.value)) || event.target.value < 0 || event.target.value > 100) {
+        setMessage("Grade " + (idx + 1) + " is invalid.");
+        valueTarget = scores[idx];
+      } else
+        if (Number(message.split(" ")[1]) === (idx + 1))
+          setMessage("");
 
       const updatedGrades = [...grades];
-      updatedGrades[idx] = {...updatedGrades[idx], [event.target.name]:event.target.value};
+      updatedGrades[idx] = {...updatedGrades[idx], [event.target.name]:valueTarget};
 
       setGrades(updatedGrades);
     }
@@ -93,6 +93,7 @@ const AssignmentGrade = (props) => {
         setMessage("Error found: " + err);
       }
 
+      setMessage("");
       editClose();
     };
     
@@ -102,7 +103,7 @@ const AssignmentGrade = (props) => {
         <Dialog open={open}>
           <DialogTitle>Grade Assignment</DialogTitle>
           <DialogContent style={{ paddingTop: 20 }}>
-            <h5>{message}</h5>
+            <h5 class="Error">{message}</h5>
             <table className="Center" > 
             <thead>
             <tr>
