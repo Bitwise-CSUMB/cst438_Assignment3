@@ -11,7 +11,7 @@ import {SERVER_URL} from "../../Constants";
 // issue a POST with the URL /enrollments?secNo= &studentId=3
 // studentId=3 will be removed in assignment 7.
 
-const CourseEnroll = (props) => {
+const CourseEnroll = () => {
 
     const studentId = 3; // Placeholder until login is implemented
     const headers = ['Semester', 'Section No', 'Course Id', 'Section Id', 'Room', 'Times', 'Instructor', 'Instructor Email', ''];

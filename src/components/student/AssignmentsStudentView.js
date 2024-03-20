@@ -10,7 +10,7 @@ import TextField from "@mui/material/TextField";
 
 // display a table with columns  Course Id, Assignment Title, Assignment DueDate, Score
 
-const AssignmentsStudentView = (props) => {
+const AssignmentsStudentView = () => {
 
     const studentId = 3; // Placeholder until login is implemented
     const headers = ['Course', 'Title', 'Due Date', 'Score'];
