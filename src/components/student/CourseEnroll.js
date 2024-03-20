@@ -89,7 +89,7 @@ const CourseEnroll = (props) => {
             {loading ? (
                 <p>Loading...</p>
             ) : (
-                <table className="Center">
+                <table className="Center Border" style={{marginTop: 10}}>
                     <thead>
                     <tr>
                         {headers.map((header, index) => (
@@ -109,7 +109,7 @@ const CourseEnroll = (props) => {
                             <td>{course.instructorName}</td>
                             <td>{course.instructorEmail}</td>
                             <td>
-                                <Button onClick={(event) => enrollAlert(event, index)}>Enroll</Button>
+                                <Button variant="contained" onClick={(event) => enrollAlert(event, index)}>Enroll</Button>
                             </td>
                         </tr>
                     ))}

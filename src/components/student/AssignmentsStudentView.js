@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import {SERVER_URL} from "../../Constants";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
 
 // student views a list of assignments and assignment grades 
 // use the URL  /assignments?studentId= &year= &semester=
@@ -48,32 +50,19 @@ const AssignmentsStudentView = (props) => {
             <table className="Center">
                 <tbody>
                 <tr>
-                    <td>Year:</td>
-                    <td>
-                        <select name="year" value={search.year} onChange={editChange}>
-                            <option value="">Select Year</option>
-                            <option value="2022">2022</option>
-                            <option value="2023">2023</option>
-                            <option value="2024">2024</option>
-                        </select>
-                    </td>
+                    <td><b>Year:</b></td>
+                    <td><TextField autoFocus label="Year" name="year" value={search.year} onChange={editChange}/></td>
                 </tr>
                 <tr>
-                    <td>Semester:</td>
-                    <td>
-                        <select name="semester" value={search.semester} onChange={editChange}>
-                            <option value="">Select Semester</option>
-                            <option value="Spring">Spring</option>
-                            <option value="Summer">Summer</option>
-                            <option value="Fall">Fall</option>
-                        </select>
-                    </td>
+                    <td><b>Semester:</b></td>
+                    <td><TextField label="Semester" name="semester" value={search.semester} onChange={editChange}/></td>
                 </tr>
                 </tbody>
             </table>
-            <br/><button type="submit" onClick={fetchAssignments}>Search</button><br/><br/>
+            <br/><Button variant="contained" onClick={fetchAssignments}>Search</Button><br/><br/>
+            <h5 className="Error">{message}</h5>
             {showHeaders && (
-                <table className="Center">
+                <table className="Center Border" style={{marginTop: 10}}>
                     <thead>
                     <tr>
                         {headers.map((header, index) => (
