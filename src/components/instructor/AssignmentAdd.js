@@ -58,17 +58,17 @@ const AssignmentAdd = (props)  => {
 
   return (
       <div>
-        <Button onClick={editOpen}>Add Assignment</Button>
+        <Button id="addAssignment" onClick={editOpen}>Add Assignment</Button>
         <Dialog open={open}>
           <DialogTitle>Add Assignment</DialogTitle>
           <DialogContent style={{ paddingTop: 20 }}>
-            <h5>{editMessage}</h5>
-            <TextField style={{ padding: 10 }} autoFocus fullWidth label="Title" name="title" value={assignment.title} onChange={editChange} />
-            <TextField style={{ padding: 10 }} fullWidth label="Due Date (YYYY-MM-DD)" name="dueDate" value={assignment.dueDate} onChange={editChange} />
+            <h4 id="addMessage">{editMessage}</h4>
+            <TextField id="etitle" style={{ padding: 10 }} autoFocus fullWidth label="Title" name="title" value={assignment.title} onChange={editChange} />
+            <TextField id="eduedate" style={{ padding: 10 }} fullWidth label="Due Date (YYYY-MM-DD)" name="dueDate" value={assignment.dueDate} onChange={editChange} />
           </DialogContent>
           <DialogActions>
-            <Button color="secondary" onClick={editClose}>Close</Button>
-            <Button color="primary" onClick={onSave}>Save</Button>
+            <Button id="close" color="secondary" onClick={editClose}>Close</Button>
+            <Button id="save" color="primary" onClick={onSave}>Save</Button>
           </DialogActions>
         </Dialog>
       </div>
