@@ -52,6 +52,7 @@ const CourseEnroll = () => {
             buttons: [
                 {
                     label: 'Enroll',
+                    id: 'Confirm',
                     onClick: () => doEnroll(selectedCourse.secNo),
                 },
                 {
@@ -109,7 +110,7 @@ const CourseEnroll = () => {
                             <td>{course.instructorName}</td>
                             <td>{course.instructorEmail}</td>
                             <td>
-                                <Button variant="contained" onClick={(event) => enrollAlert(event, index)}>Enroll</Button>
+                                <Button id="Enroll" variant="contained" onClick={(event) => enrollAlert(event, index)}>Enroll</Button>
                             </td>
                         </tr>
                     ))}
