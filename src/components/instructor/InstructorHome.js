@@ -9,7 +9,7 @@ const InstructorHome = () => {
     setTerm({...term, [event.target.name]:event.target.value});
     }
     return (
-        <>
+        <div id="instructorHome">
             <table className="Center">
             <tbody>
             <tr>
@@ -23,7 +23,7 @@ const InstructorHome = () => {
             </tbody>
             </table>
             <Link to='/sections' id="sectionslink" state={term}>Show Sections</Link>
-        </>
+        </div>
     )
 };
 

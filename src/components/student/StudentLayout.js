@@ -4,7 +4,7 @@ import { Outlet, Link } from "react-router-dom";
 export const StudentHome = () => {
 
   return (
-      <div>
+      <div id="studentHome">
           <h1>Student Home</h1>
           <p><Link to="/schedule">View Class Schedule / Drop Course</Link></p>
           <p><Link to="/addCourse">Enroll in a Course</Link></p>
