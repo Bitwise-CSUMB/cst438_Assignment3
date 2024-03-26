@@ -105,7 +105,7 @@ const EnrollmentsView = () => {
                     ))}
                 </tbody>
             </table>
-            <Button onClick={saveChanges}>Save Changes</Button>
+            <Button id="saveBtn" onClick={saveChanges}>Save Changes</Button>
         </>
     );
 }
