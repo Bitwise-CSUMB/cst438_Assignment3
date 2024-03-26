@@ -15,7 +15,7 @@ import TextField from "@mui/material/TextField";
 const ScheduleView = () => {
 
     const studentId = 3; // TODO: Temp hardcode
-    const headers = ["CourseId", "SectionId", "Title", "Credits", "Grade", ""];
+    const headers = ["Section No", "Course Id", "Section Id", "Title", "Credits", "Grade", ""];
 
     const [message, setMessage] = useState("");
 
@@ -100,9 +100,9 @@ const ScheduleView = () => {
                 <h5 className="Error">{message}</h5>
 
                 <div className="Center-Flex-Vertically">
-                    <TextField autoFocus label="Year" name="year" onChange={yearChange}/>
-                    <TextField style={{marginLeft: 5}} label="Semester" name="semester" onChange={semesterChange}/>
-                    <Button style={{marginLeft: 5}} variant="contained" onClick={query}>Query</Button><br></br>
+                    <TextField autoFocus label="Year" name="year" id="year" onChange={yearChange}/>
+                    <TextField style={{marginLeft: 5}} label="Semester" name="semester" id="semester" onChange={semesterChange}/>
+                    <Button style={{marginLeft: 5}} id="query" variant="contained" onClick={query}>Query</Button><br></br>
                 </div>
 
                 <div className="Text-Align-Left" style={{marginTop: 10}}>
@@ -119,12 +119,13 @@ const ScheduleView = () => {
                     <tbody>
                         {enrollments.map((a, idx) => (
                             <tr key={idx}>
+                                <td>{a.sectionNo}</td>
                                 <td>{a.courseId}</td>
                                 <td>{a.sectionId}</td>
                                 <td>{a.courseTitle}</td>
                                 <td>{a.credits}</td>
                                 <td>{a.grade}</td>
-                                <td><Button onClick={dropCourse}>Drop Course</Button></td>
+                                <td><Button variant="contained" onClick={dropCourse}>Drop</Button></td>
                             </tr>
                         ))}
                     </tbody>
