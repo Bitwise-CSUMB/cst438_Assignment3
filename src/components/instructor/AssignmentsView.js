@@ -132,7 +132,7 @@ const AssignmentsView = (props) => {
       <div>
         <h3>Assignments</h3>
         <h5 id="message" className="Error">{message}</h5>
-        <table className="Center">
+        <table id="assignmentTable" className="Center">
           <thead>
           <tr>
             {headers.map((s, idx) => <th key={idx}>{s}</th>)}

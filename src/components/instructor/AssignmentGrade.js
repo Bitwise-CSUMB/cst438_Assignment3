@@ -103,7 +103,7 @@ const AssignmentGrade = (props) => {
         <DialogTitle>Grade Assignment</DialogTitle>
         <DialogContent style={{ paddingTop: 20 }}>
           <h5 className="Error">{message}</h5>
-          <table className="Center" >
+          <table id="gradeTable" className="Center" >
             <thead>
               <tr>
                 {headers.map((h, idx) => (<th key={idx}>{h}</th>))}
@@ -122,8 +122,8 @@ const AssignmentGrade = (props) => {
           </table>
         </DialogContent>
         <DialogActions>
-          <Button color="secondary" onClick={editClose}>Close</Button>
-          <Button color="primary" onClick={onSave}>Save</Button>
+          <Button id="gradeDialogClose" color="secondary" onClick={editClose}>Close</Button>
+          <Button id="gradeDialogSave" color="primary" onClick={onSave}>Save</Button>
         </DialogActions>
       </Dialog>
     </div>
